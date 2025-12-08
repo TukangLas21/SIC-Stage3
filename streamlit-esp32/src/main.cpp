@@ -45,7 +45,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   Serial.println(message);
 
   // Logika Trigger Output
-  if (String(topic) == "iot/output") {
+    if (String(topic) == SUBSCRIBE_TOPIC) {
     if (message == "BUZZER_ON") {
       digitalWrite(BUZZER_PIN, HIGH);
       Serial.println(">> ALARM NYALA!");
