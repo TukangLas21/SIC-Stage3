@@ -93,19 +93,17 @@ void loop() {
 
     // Indikasikan dengan Buzzer/LED
     if (predicted_class == 0) { // dingin
+      digitalWrite(BUZZER_PIN, HIGH); // Nyalakan buzzer
+      delay(500);
       digitalWrite(BUZZER_PIN, LOW); // Matikan buzzer
-      digitalWrite(YELLOW_LED_PIN, LOW);
-      digitalWrite(GREEN_LED_PIN, HIGH);
     } else if (predicted_class == 1) { // normal
       digitalWrite(BUZZER_PIN, LOW); // Matikan buzzer
       digitalWrite(YELLOW_LED_PIN, HIGH);
       digitalWrite(GREEN_LED_PIN, LOW);
     } else if (predicted_class == 2) { // panas
-      digitalWrite(YELLOW_LED_PIN, LOW);
-      digitalWrite(GREEN_LED_PIN, LOW);
-      digitalWrite(BUZZER_PIN, HIGH); // Nyalakan buzzer
-      delay(500);
       digitalWrite(BUZZER_PIN, LOW); // Matikan buzzer
+      digitalWrite(YELLOW_LED_PIN, LOW);
+      digitalWrite(GREEN_LED_PIN, HIGH);
     }
 
     // Buat JSON Payload

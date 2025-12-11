@@ -53,8 +53,7 @@ namespace Eloquent {
 
                 protected:
                     /**
-                    * Compute kernel between feature vector and support vector.
-                    * Kernel type: linear
+                    * Compute linear kernel between feature vector and support vector.
                     */
                     float compute_kernel(float *x, ...) {
                         va_list w;

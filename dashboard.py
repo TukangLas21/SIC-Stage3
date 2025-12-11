@@ -64,11 +64,8 @@ if "mqtt_client" not in st.session_state:
         st.error(f"Gagal koneksi MQTT: {e}")
 
 # ================= BAGIAN DINAMIS (FRAGMENT) =================
-# Decorator ini membuat fungsi di bawahnya berjalan ulang setiap 1 detik
-# TANPA me-reload seluruh halaman. Scroll aman, tidak akan loncat.
 @st.fragment(run_every=1)
 def update_dashboard():
-    # 1. PROSES ANTRIAN DATA (QUEUE)
     while not st.session_state["data_queue"].empty():
         try:
             msg_type, content = st.session_state["data_queue"].get_nowait()
@@ -90,7 +87,6 @@ def update_dashboard():
                 st.session_state["last_packet"] = new_record
                 st.session_state["data_log"].append(new_record)
                 
-                # Batasi log agar tidak memberatkan browser
                 if len(st.session_state["data_log"]) > 100:
                     st.session_state["data_log"].pop(0)
                     
@@ -119,7 +115,7 @@ def update_dashboard():
     with col_stat3:
         if st.button("🗑️ Reset Data"):
             st.session_state["data_log"] = []
-            st.rerun() # Khusus tombol ini kita boleh rerun manual sekali
+            st.rerun() 
 
     st.markdown("---")
 
@@ -127,7 +123,6 @@ def update_dashboard():
     last_data = st.session_state["last_packet"]
     
     if last_data:
-        # Metrics
         c1, c2, c3 = st.columns(3)
         c1.metric("Temperature", f"{last_data['temperature']} °C")
         c2.metric("Humidity", f"{last_data['humidity']} %")
@@ -143,7 +138,6 @@ def update_dashboard():
 
         st.markdown("---")
         
-        # Persiapan Dataframe untuk Chart
         df_chart = pd.DataFrame(st.session_state["data_log"])
         
         col_chart1, col_chart2 = st.columns(2)
@@ -172,8 +166,5 @@ def update_dashboard():
     else:
         st.info("Menunggu data masuk dari sensor...")
 
-# ================= MAIN EXECUTION =================
-# Panggil fungsi fragment sekali.
-# Streamlit akan otomatis menjalankannya ulang setiap 1 detik (run_every=1)
-# HANYA di dalam lingkup fungsi ini, tanpa mereset scroll halaman utama.
+
 update_dashboard()
